@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOPAMS_CALENDAR</title>
+
+  <!-- Include FullCalendar CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include FullCalendar JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+</head>
+<body>
+  <div id="calendar"></div>
+  <!--Back Button Going to dashboard page-->
+  <style>
+    .btn {
+      display: inline-block;
+      background-color: #f0f0f0;
+      border: none;
+      color: #555555;
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn:hover {
+      background-color: #dddddd;
+    }
+    </style>
+    
+    <a href="/" class="btn">Back</a>
+    
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Fetch appointment schedule data from the server
+      $.ajax({
+        url: "appointment",
+        method: "GET",
+        success: function (response) {
+          // Transform the response data if needed
+          var events = [];
+          for (var i = 0; i < response.length; i++) {
+            var event = {
+              title:
+                "Doctor: " +
+                response[i].doc_id +
+                " | Patient: " +
+                response[i].pat_id,
+              start: response[i].appointment_date,
+              end: response[i].appointment_date, // Assuming each appointment lasts for 1 day
+            };
+            events.push(event);
+          }
+
+          // Initialize FullCalendar with the appointment events
+          $("#calendar").fullCalendar({
+            events: events,
+          });
+        },
+      });
+    });
+  </script>
+</body>
+</html>
